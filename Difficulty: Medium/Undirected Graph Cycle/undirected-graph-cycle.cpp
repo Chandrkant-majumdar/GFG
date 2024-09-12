@@ -28,7 +28,7 @@ class Solution {
         }
         return false;
     }
-    bool isCycle(int V, vector<int> adj[]) {
+    bool isCycle1(int V, vector<int> adj[]) {
        vector<int>vis(V,0);
        for(int i=0;i<V;i++){
            if(!vis[i]){
@@ -38,6 +38,31 @@ class Solution {
        }
        return false;
     }
+    
+    // Method 2
+    bool dfs(int node,int par,vector<int>&vis,vector<int>adj[]){
+        vis[node]=1;
+        for(auto nbr:adj[node]){
+            if(!vis[nbr]){
+                if(dfs(nbr,node,vis,adj)) return true;
+            }else if(nbr!=par){
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    bool isCycle(int V, vector<int> adj[]){
+        vector<int>vis(V,0);
+        for(int i=0;i<V;i++){
+            if(!vis[i]){
+                if(dfs(i,-1,vis,adj)) return true;
+            }
+            
+        }
+        return false;
+    }
+    
 };
 
 //{ Driver Code Starts.
