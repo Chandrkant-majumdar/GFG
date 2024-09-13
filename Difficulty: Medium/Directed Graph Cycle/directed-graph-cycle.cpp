@@ -23,17 +23,48 @@ class Solution {
         return false;
     }
     bool isCyclic(int V, vector<int> adj[]) {
-        // code here
-        vector<int>vis(V,0),pas(V,0);
+        // 1.using Dfs
+        // vector<int>vis(V,0),pas(V,0);
         
        
         
-        for(int i=0;i<V;i++){
-            if(!vis[i] ){
-                if(dfs(i,-1,adj,vis,pas)) return true;
-            }
-        }
-        return false;
+        // for(int i=0;i<V;i++){
+        //     if(!vis[i] ){
+        //         if(dfs(i,-1,adj,vis,pas)) return true;
+        //     }
+        // }
+        // return false;
+        
+       // Using Topo sort
+       vector<int>vis(V,0),id(V,0);
+       for(int i=0;i<V;i++){
+           for(auto x:adj[i]){
+               id[x]++;
+           }
+       }
+       queue<int>q;
+       for(int i=0;i<V;i++){
+           if(id[i]==0){
+               q.push(i);
+           }
+       }
+       vector<int>ans;
+       while(!q.empty()){
+           int node=q.front();
+           ans.push_back(node);
+           q.pop();
+           for(auto nbr:adj[node]){
+               id[nbr]--;
+               if(id[nbr]==0){
+                   q.push(nbr);
+               }
+           }
+       }
+       
+       if(ans.size()==V) return false;
+       
+       return true;
+        
     }
 };
 
