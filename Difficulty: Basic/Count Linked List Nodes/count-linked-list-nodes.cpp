@@ -27,9 +27,10 @@ class Solution {
   public:
     // Function to count nodes of a linked list.
     int getCount(struct Node* head) {
+            
             int c=0;
             if(!head) return 0;
-            while(head->next){
+            while(head->next!=NULL){
                 c++;
                 head=head->next;
             }
