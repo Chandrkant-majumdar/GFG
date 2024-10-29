@@ -49,6 +49,34 @@ class Solution {
   public:
     // Function to sort a linked list of 0s, 1s and 2s.
     Node* segregate(Node* head) {
+        
+        if(!head || !head->next) return head;
+
+        Node* zeroH=new Node(-1),*zero=zeroH;
+        Node* oneH=new Node(-1),*one=oneH;
+        Node* twoH=new Node(-1),*two=twoH;
+        Node *t=head;
+        while(t){
+            if(t->data==0){
+                zero->next=t;
+                zero=zero->next;
+            }
+            else if(t->data==1){
+                one->next=t;
+                one=one->next;
+            }else{
+                two->next=t;
+                two=two->next;
+            }
+            t=t->next;
+        }
+        zero->next=(oneH->next)?oneH->next:twoH->next;
+        one->next=twoH->next;
+        two->next=nullptr;
+        
+        return head=zeroH->next;
+    }
+    Node* segregate1(Node* head) {
 
         // Add code here
         vector<int>ans;
