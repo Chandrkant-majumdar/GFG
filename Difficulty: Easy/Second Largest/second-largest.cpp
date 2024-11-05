@@ -11,18 +11,23 @@ class Solution {
     // Function returns the second
     // largest elements
     int getSecondLargest(vector<int> &arr) {
-        // Code Here
-        int maxi1=INT_MIN,maxi2=-1;
-        for(auto x:arr){
-            maxi1=max(x,maxi1);
-        }
-        
-        for(auto x:arr){
-            if(maxi2<x && x!=maxi1)
-            maxi2=max(x,maxi2);
-        }
-        return maxi2;
+      int fl=-1;
+      int sl=-1;
+      for(auto it:arr)
+      {
+          if(it>fl)
+          {
+              sl=fl;
+              fl=it;
+          }
+          else if(it>sl && it!=fl)
+          {
+              sl=it;
+          }
+      }
+      return sl;
     }
+    
 };
 
 //{ Driver Code Starts.
@@ -43,6 +48,7 @@ int main() {
         Solution ob;
         int ans = ob.getSecondLargest(arr);
         cout << ans << endl;
+        cout << "~" << endl;
     }
     return 0;
 }
