@@ -6,22 +6,24 @@ using namespace std;
 // } Driver Code Ends
 class Solution {
   public:
-   int f(int i,int k, vector<int>& arr,vector<int>&dp){
+    int f(int i,int k,vector<int>& h,vector<int>& dp){
+        int n=h.size();
+        // if(i>=n) 1e9;
+        if(i==n-1) return 0;
+        if(dp[i]!=-1) return dp[i];
+        int ans=1e9;
+        for(int j=i+1;j<=i+k;j++){
+            int cost=(j<n)?abs(h[i]-h[j])+f(j,k,h,dp):1e9;
+            ans=min(cost,ans);
+        }
+        return dp[i]=ans;
         
-        if(i>=arr.size()) return 1e9;
-         if(i==arr.size()-1) return 0;
-         if(dp[i]!=-1) return dp[i];
-       int ans=1e9;
-       for( int j=1;j<=k;j++){
-           int t=abs(arr[i]-arr[i+j])+f(i+j,k,arr,dp);
-           ans=min(ans,t);
-       }
-       return dp[i]=ans;
-   }
-    int minimizeCost(int k, vector<int>& arr) {
+    }
+    int minimizeCost(int k, vector<int>& h) {
         // Code here
-        vector<int>dp(arr.size(),-1);
-        return f(0,k,arr,dp);
+        int n=h.size();
+        vector<int>dp(n,-1);
+        return f(0,k,h,dp);
     }
 };
 
@@ -46,6 +48,7 @@ int main() {
         Solution obj;
         int res = obj.minimizeCost(k, arr);
         cout << res << endl;
+        cout << "~" << endl;
         // string tl;
         // getline(cin, tl);
     }
