@@ -6,22 +6,24 @@ using namespace std;
 // } Driver Code Ends
 class Solution {
   public:
-     
-     int f(int i,int n,vector<int>&h,vector<int>&dp){
-        //  if(prev==-1) return h[0];
-         if(i>=n) return 0;
-          if(i==n-1) return 0;
-          if(dp[i]!=-1) return dp[i];
-         int tk=abs(h[i+1]-h[i])+f(i+1,n,h,dp);
-         int nt=INT_MAX;
-         if(i+2<n)
-          nt=abs(h[i+2]-h[i])+f(i+2,n,h,dp);
-         return dp[i]=min(tk,nt);
+     int f(int i,vector<int>& h,vector<int>&dp){
+         
+         if(i==0) return 0;
+         
+         if(i<0) return 1e9;
+         
+         if(dp[i]!=-1) return dp[i];
+         
+         int os=(i-1>=0)?abs(h[i]-h[i-1])+f(i-1,h,dp):1e9;
+         int ts=(i-2>=0)?abs(h[i]-h[i-2])+f(i-2,h,dp):1e9;
+         
+         return dp[i]=min(os,ts);
      }
-    int minimumEnergy(vector<int>& g, int n) {
+    int minimumEnergy(vector<int>& h, int n) {
         // Code here
         vector<int>dp(n,-1);
-        return f(0,n,g,dp);
+        return f(n-1,h,dp);
+        
     }
 };
 
@@ -39,7 +41,9 @@ int main() {
         }
         Solution obj;
         cout << obj.minimumEnergy(arr, N) << "\n";
-    }
+    
+cout << "~" << "\n";
+}
     return 0;
 }
 // } Driver Code Ends
