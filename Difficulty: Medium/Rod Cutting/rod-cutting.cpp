@@ -10,22 +10,20 @@ using namespace std;
 
 class Solution{
   public:
-     int f(int i,int N,int p[],vector<vector<int>>&dp){
-         
-         if(i==0){
-             return N*p[0];
-         }
-         if(dp[i][N]!=-1) return dp[i][N];
-         
-         int len=i+1;
-         int tk=(N>=len)?p[i]+f(i,N-len,p,dp):0;
-         int nt=f(i-1,N,p,dp);
-         return dp[i][N]= max(tk,nt);
-     }
+    int f(int i,int rl,int p[],vector<vector<int>>&dp){
+        if(rl==0) return 0;
+        if(i==0) return rl*p[i];
+        int len=i+1;
+        if(dp[i][rl]!=-1) return dp[i][rl];
+        int tk=(len<=rl)?p[i]+f(i,rl-len,p,dp):-1e9;
+        int nt=f(i-1,rl,p,dp);
+        return dp[i][rl]=max(tk,nt);
+    }
     int cutRod(int p[], int n) {
         //code here
-        vector<vector<int>>dp(n+1,vector<int>(n+1,-1));
+        vector<vector<int>>dp(n,vector<int>(n+1,-1));
         return f(n-1,n,p,dp);
+        
     }
 };
 
@@ -44,7 +42,9 @@ int main() {
         Solution ob;
 
         cout << ob.cutRod(a, n) << endl;
-    }
+    
+cout << "~" << "\n";
+}
     return 0;
 }
 // } Driver Code Ends
