@@ -9,29 +9,25 @@ using namespace std;
 
 class Solution{
 public:
-    int find(int i,int n,int val[], int wt[],vector<vector<int>>&dp){
-        if(i == 0) {
-            return (n / wt[0]) * val[0];
-        }
-        if(n==0)return 0;
-        if(dp[i][n]!=-1)return dp[i][n];
-        int nottake=find(i-1,n,val,wt,dp);
-        int take=0;
-        if(wt[i]<=n){
-            take=val[i]+find(i,n-wt[i],val,wt,dp);
-        }
-        return dp[i][n]=max(take,nottake);
+    int f(int i,int w, int val[], int wt[], vector<vector<int>>&dp){
         
+        if(i==0){
+            // if(w>=wt[i])
+            return (w/wt[0])*val[0];
+            // else
+            // return -1e9;
+        }
+        if(dp[i][w]!=-1) return dp[i][w];
+        int tk=(w>=wt[i])?val[i]+f(i,w-wt[i],val,wt,dp):-1e9;
+        int nt=f(i-1,w,val,wt,dp);
+        
+        return dp[i][w]=max(tk,nt);
     }
     int knapSack(int N, int W, int val[], int wt[])
     {
         // code here
-        vector<vector<int>> dp(N, vector<int>(W + 1, -1));
-        int ans=find(N-1,W,val,wt,dp);
-        // if(ans==-1e9){
-        //     return 0;
-        // }
-        return ans;
+        vector<vector<int>>dp(N,vector<int>(W+1,-1));
+        return f(N-1,W,val,wt,dp);
     }
 };
 
@@ -51,7 +47,9 @@ int main(){
         
         Solution ob;
         cout<<ob.knapSack(N, W, val, wt)<<endl;
-    }
+    
+cout << "~" << "\n";
+}
     return 0;
 }
 // } Driver Code Ends
