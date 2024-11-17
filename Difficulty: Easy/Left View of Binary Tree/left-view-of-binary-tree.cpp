@@ -28,7 +28,18 @@ struct Node
 
 class Solution {
   public:
-    vector<int> leftView(Node *root) {
+     void f(Node *root,int l,vector<int>&ans){
+         if(!root) return;
+         if(ans.size()==l) ans.push_back(root->data);
+         f(root->left,l+1,ans);
+         f(root->right,l+1,ans);
+     }
+     vector<int> leftView(Node *root){
+         vector<int>ans;
+            f(root,0,ans);
+            return ans;
+     }
+    vector<int> leftView1(Node *root) {
         // code here
         if(!root) return {};
         vector<vector<int>>ans;
