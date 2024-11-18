@@ -3,11 +3,72 @@
 using namespace std;
 
 // } Driver Code Ends
+
+class Dis{
+    vector<int>size,par;
+    public:
+    Dis(int n){
+        size.resize(n+1);
+        par.resize(n+1);
+        for(int i=0;i<=n;i++){
+            par[i]=i;
+            size[i]=1;
+        }
+    }
+    int findP(int node){
+        if(node==par[node]) return node;
+        
+        return par[node]=findP(par[node]);
+    }
+    
+    void uni(int u,int v){
+        int u_p=findP(u);
+        int v_p=findP(v);
+        if(u_p==v_p) return;
+        if(size[u_p]>size[v_p]){
+            size[u_p]+=size[v_p];
+            par[v_p]=u_p;
+        }else{
+            size[v_p]+=size[u_p];
+            par[u_p]=v_p;
+        }
+    }
+    
+    
+};
+
 class Solution
 {
 	public:
-	//Function to find sum of weights of edges of the Minimum Spanning Tree.
-    int spanningTree(int V, vector<vector<int>> adj[])
+	
+	
+	 int spanningTree(int V, vector<vector<int>> adj[]){
+	     vector<pair<int,pair<int,int>>>e;
+	     for(int i=0;i<V;i++){
+	         for(auto ed:adj[i]){
+	             int v=ed[0];
+	             int w=ed[1];
+	             e.push_back({w,{i,v}});
+	         }
+	     }
+	     sort(e.begin(),e.end());
+	      Dis d(V);
+	     int sum=0;
+	     for(auto x:e){
+	         int wt=x.first;
+	         int u=x.second.first;
+	         int v=x.second.second;
+	         if(d.findP(u)!=d.findP(v)){
+	             sum+=wt;
+	             d.uni(u,v);
+	         }
+	         
+	     }
+	     return sum;
+	 }
+	
+	//prims
+    int spanningTree1(int V, vector<vector<int>> adj[])
     {
         // code here
             
@@ -16,6 +77,7 @@ class Solution
         vector<int>vis(V,0);
         // vis[0]=1;
         int sum=0;
+        vector<int>e;
         while(!pq.empty()){
             auto t=pq.top();
             int cost=t.first;
@@ -24,16 +86,24 @@ class Solution
             int node=t.second;
             if(vis[node]) continue;
             vis[node]=1;
+            e.push_back(node);
                sum+=cost;
             for(auto nbr:adj[node]){
                 int wt=nbr[1];
                 int v=nbr[0];
                 
                 // if(!vis[nbr])
-                if(!vis[v])
-                pq.push({wt,v});
+                if(!vis[v]){
+                     
+                     pq.push({wt,v});
+                }
+               
             }
         }
+        for(auto x:e){
+            cout<<x<<" ";
+        }
+        cout<<endl;
         return sum;
     }
 };
